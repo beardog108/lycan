@@ -7,6 +7,6 @@ self.addEventListener('message', function(e) {
     doPow(
     data.metadata,
     data.data,
-    2
+    data.difficulty
   ));
 }, false);
