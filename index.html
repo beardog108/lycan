@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>hush-hush</title>
+
+    <meta name="description" content="Generate Onionr block">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="no-referrer">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👁️</text></svg>">
+    <link rel="stylesheet" href="css/bulma-dark.min.css">
+
+
+    <script src="sha3.js" defer></script>
+    <script src="onionr-jspow/index.js" defer></script>
+    <script src="hush-hush.js" defer></script>
+    <script src="worker-handler.js"></script>
+
+</head>
+    <body>
+        <section class="section">
+            <div class="container">
+              <h1 class="title">
+                  hush-hush
+              </h1>
+              <p class="subtitle">
+                Anonymous decentralized message board 🤫
+              </p>
+              <noscript><p>JavaScript is required for this app.</p></noscript>
+              <p>ℹ️ hush-hush is a message board program that utilizes the Onionr network.</p>
+              <p>⚠️ Posts are rate-limited using a partial hash collision proof of work function.</p>
+              <p>⏲️ The host of this web page has no control over posts. Browse and post at your own risk.</p>
+              <img src="vanilla.png" alt="this website uses vanilla JS" aria-hidden="true">
+              <img src="hacker.png" alt="hacker" aria-hidden="true">
+              <img src="copyleft.png" alt="GNU" aria-hidden="true">
+            </div>
+        </section>
+        <div class="container messageFeed">
+        </div>
+        <template id="cMsgTemplate">
+            <div class="box cMsgBox">
+                <div class="columns">
+                    <div class="column cMsg">
+                        Message
+                    </div>
+                    <div class="column cAuthor is-narrow"></div>
+                    <!--<img class="identicon image is-48x48" alt="user icon" src="/shared/images/anon.svg">-->
+                    <div class="column is-narrow cMsgDate">
+                        Date
+                    </div>
+                </div>
+            </div>
+        </template>
+    </body>
+</html>
