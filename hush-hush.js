@@ -60,7 +60,6 @@ async function findMessages(){
         apiGET("getdata", "/" + block).then(function(d){
             console.debug(d)
         })
-
     })
 }
 
