@@ -19,12 +19,11 @@
 
 self.addEventListener('message', function(e) {
     let lookupPeer = async function(peer){
-        console.log("looking up on " + peer)
-        //return await fetch("")
+        let newList = await fetch('http://')
     }
     var data = JSON.parse(e.data)
 
-    let peers = data['nodeList'][0]
+    let peers = data['nodeList']
     lookupPeer(peers)
 
   }
