@@ -17,14 +17,22 @@
 */
 
 
-self.addEventListener('message', function(e) {
+self.addEventListener('message', async function(e) {
     let lookupPeer = async function(peer){
-        let newList = await fetch('http://')
+        let newList = await (await fetch('http://' + peer + '.onion/pex')).text()
+
+        newList = newList.replace('.onion', '')
+        return newList.split(',')
     }
     var data = JSON.parse(e.data)
 
-    let peers = data['nodeList']
-    lookupPeer(peers)
+    let peer = data['node']
+    let peerList = await lookupPeer(peer)
+    peerList.forEach(node => {
+        if (node){
+            postMessage(node)
+        }
+    })
 
   }
 )

@@ -2,6 +2,12 @@ var lookupWorker = new Worker('peer-lookup.js');
 
 
 lookupWorker.addEventListener('message', function(e) {
-    console.log('Worker said: ', e.data);
+    publicNodes.push(e.data)
   }, false);
-lookupWorker.postMessage(JSON.stringify({"nodeList": publicNodes}))
+
+
+
+setInterval(function(){
+  lookupWorker.postMessage(JSON.stringify({"node": getCurrentNode()}))
+}, 60000)
+lookupWorker.postMessage(JSON.stringify({"node": getCurrentNode()}))

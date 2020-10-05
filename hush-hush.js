@@ -17,10 +17,36 @@
 */
 var findMessageIntervalTime = 5000
 var publicNodes = [
-    "4gh2dwbmlrombeoyco55un7kbej7trsuebxfzvo53h6uj5adseceduyd"
+    "yre3tmbu25lcogl42xlh73wfchgbx3unz2zz3ttyiylj6gaq5mzhevid"
 ]
 var messageHashes = []
-var blocks = {}
+var blocks = []
+var basicTextEncoder = new TextEncoder()
+var difficulty = "0000"
+var maxBlockAge = 2678400
+
+
+function shuffleArray(array) {
+    if (document.hidden){return}
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+//https://stackoverflow.com/q/10420352
+function getReadableFileSizeString(fileSizeInBytes) {
+    var i = -1;
+    var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+    do {
+        fileSizeInBytes = fileSizeInBytes / 1024;
+        i++;
+    } while (fileSizeInBytes > 1024);
+
+    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+};
+
+setInterval(function(){shuffleArray(publicNodes)}, 5000)
+
 
 // Make Tor connect to each node to reduce future connection time
 publicNodes.forEach(element => {
@@ -40,7 +66,7 @@ function addMessage(message, timestamp){
 
     let newEl = tmpl.content.cloneNode(true)
     newEl.children[0].children[0].children[0].innerText = message
-    newEl.children[0].children[0].children[1].innerText = timestamp
+    newEl.children[0].children[0].children[2].innerText = timestamp
     document.getElementsByClassName("messageFeed")[0].append(newEl)
 }
 
@@ -59,16 +85,40 @@ async function apiGET(path, queryString, raw=false){
 }
 
 async function findMessages(){
+    if (document.hidden){
+        setTimeout(function(){findMessages()}, 1000)
+        return
+    }
     let messages = (await apiGET("getblocklist", "?type=brd")).split('\n')
     messages.forEach(block => {
-        if (! block){return}
-        if (block in blocks){return}
+        block = reconstructHash(block)
+        if (!block.startsWith(difficulty)){console.debug("not difficulty reached:" + block); return}
+
+        if (blocks.includes(block)){return}
         apiGET("getdata", "/" + block, raw=false).then(function(d){
-            let metadata = d.split("\n")[0]
+            let updateMemoryUsage = function(data, block){
+                let current = parseInt(document.getElementById('memUsage').innerText)
+                // Size is size of data (not metadata) and block hash
+                document.getElementById('memUsage').innerText = getReadableFileSizeString(current + ((basicTextEncoder.encode(data)).length + block.length))
+            }
+
+            try{
+                verifyBlock(d, block)
+                verifyTime()
+            }
+            catch(e){
+                console.debug(block + ":" + e)
+            }
+
+            let metadata = JSON.parse(d.split("\n")[0])
+            console.debug(metadata)
             let data = d.split('\n')[1]
-            blocks[block] = data
+            blocks.push(block)
+            addMessage(data, new Date(metadata['time']))
+            updateMemoryUsage(data, block)
         })
     })
+    setTimeout(function(){findMessages()}, findMessageIntervalTime)
 }
 
-setInterval(function(){findMessages()}, findMessageIntervalTime)
+setTimeout(function(){findMessages()}, findMessageIntervalTime)
