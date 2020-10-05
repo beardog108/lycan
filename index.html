@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="tordetect.js" async></script>
     <script src="marked.min.js" defer></script>
+    <script src="purify.min.js" defer></script>
     <script src="sha3.js" defer></script>
     <script src="onionr-jspow/index.js" defer></script>
     <script src="onionr-blocks.js" defer></script>
@@ -35,7 +36,7 @@
                   JavaScript is required for this app. The server has no knowledge of posts, so content must be served by P2P nodes.
                 </p></noscript>
               <p>kiccan is a message board program that utilizes the <a href="https://onionr.net/">Onionr</a> network.</p>
-              <p>⏲️posts are rate-limited using a partial hash collision proof of work function.</p>
+              <p>posts are rate-limited using a partial hash collision proof of work function.</p>
               <p>⚠️ the host of this web page has no control over posts. Browse and post at your own risk.</p>
               <p class="is-pulled-right">post memory usage: <span id="memUsage">0kb</span></p>
               <p class="is-hidden has-text-warning noTor">You do not seem to be able to reach .onion services. Please use Tor Browser or Brave Browser's private tabs.</p>
@@ -46,7 +47,8 @@
                 <div class="column is-two-fifths">
                     <div class="postForm">
                         <div class="control">
-                            <textarea class="textarea" placeholder="Normal textarea"></textarea>
+                            <p>Markdown is supported, except for images, styles and scripts.</p>
+                            <textarea class="textarea" placeholder="Draft a post..."></textarea>
                         </div>
                     </div>
                 </div>

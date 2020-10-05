@@ -21,7 +21,8 @@ self.addEventListener('message', async function(e) {
     let lookupPeer = async function(peer){
         let newList = await (await fetch('http://' + peer + '.onion/pex')).text()
 
-        newList = newList.replace('.onion', '')
+        newList = newList.replaceAll('.onion', '')
+
         return newList.split(',')
     }
     var data = JSON.parse(e.data)

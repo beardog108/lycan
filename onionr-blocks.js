@@ -11,4 +11,9 @@ function verifyBlock(raw, hash){
     }
 }
 
-
+function verifyTime(time){
+    let epoch = Math.round(Date.now() / 1000);
+    if ((epoch - time) > maxBlockAge){
+        throw new Error("Block is too old")
+    }
+}

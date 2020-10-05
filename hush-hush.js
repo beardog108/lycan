@@ -17,7 +17,8 @@
 */
 var findMessageIntervalTime = 5000
 var publicNodes = [
-    "yre3tmbu25lcogl42xlh73wfchgbx3unz2zz3ttyiylj6gaq5mzhevid"
+    "yre3tmbu25lcogl42xlh73wfchgbx3unz2zz3ttyiylj6gaq5mzhevid",
+    "ltqmmfww3tue6tibtyfc4kk7edh3owewxwcgrkvwqw4cwgd3w3zcj6id"
 ]
 var messageHashes = []
 var blocks = []
@@ -33,6 +34,8 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+shuffleArray(publicNodes)
+
 //https://stackoverflow.com/q/10420352
 function getReadableFileSizeString(fileSizeInBytes) {
     var i = -1;
@@ -62,12 +65,22 @@ function getCurrentNode(){
 }
 
 function addMessage(message, timestamp){
+
+    message =  DOMPurify.sanitize(marked(message),
+                                 {FORBID_ATTR: ['style'],
+                                 ALLOWED_TAGS: ['b', 'p', 'em', 'i', 'a',
+                                                'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'center', 'br', 'hr']})
+
+    let childEl = document.createElement('div')
+    childEl.classList.add('content')
+    childEl.innerHTML = message
     var tmpl = document.getElementById("cMsgTemplate")
 
     let newEl = tmpl.content.cloneNode(true)
-    newEl.children[0].children[0].children[0].innerText = message
+    newEl.children[0].children[0].children[0].innerText = ""
+    newEl.children[0].children[0].children[0].append(childEl)
     newEl.children[0].children[0].children[2].innerText = timestamp
-    document.getElementsByClassName("messageFeed")[0].append(newEl)
+    document.getElementsByClassName("messageFeed")[0].prepend(newEl)
 }
 
 async function apiGET(path, queryString, raw=false){
@@ -91,6 +104,7 @@ async function findMessages(){
     }
     let messages = (await apiGET("getblocklist", "?type=brd")).split('\n')
     messages.forEach(block => {
+        if (!block) { return}
         block = reconstructHash(block)
         if (!block.startsWith(difficulty)){console.debug("not difficulty reached:" + block); return}
 
@@ -101,20 +115,20 @@ async function findMessages(){
                 // Size is size of data (not metadata) and block hash
                 document.getElementById('memUsage').innerText = getReadableFileSizeString(current + ((basicTextEncoder.encode(data)).length + block.length))
             }
-
+            let metadata = JSON.parse(d.split("\n")[0])
+            console.debug(metadata)
+            //let data = d.split('\n')[1]
+            let data = d.substring(d.indexOf('\n') + 1);
             try{
                 verifyBlock(d, block)
-                verifyTime()
+                verifyTime(metadata['time'])
             }
             catch(e){
                 console.debug(block + ":" + e)
+                return
             }
-
-            let metadata = JSON.parse(d.split("\n")[0])
-            console.debug(metadata)
-            let data = d.split('\n')[1]
             blocks.push(block)
-            addMessage(data, new Date(metadata['time']))
+            addMessage(data, new Date(metadata['time'] * 1000))
             updateMemoryUsage(data, block)
         })
     })
