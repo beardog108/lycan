@@ -1,5 +1,5 @@
 var lookupWorker = new Worker('peer-lookup.js');
-
+var powWorker = new Worker("powworker.js")
 
 lookupWorker.addEventListener('message', function(e) {
     publicNodes.push(e.data)

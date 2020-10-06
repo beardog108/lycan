@@ -17,8 +17,8 @@
 */
 var findMessageIntervalTime = 5000
 var publicNodes = [
-    "yre3tmbu25lcogl42xlh73wfchgbx3unz2zz3ttyiylj6gaq5mzhevid",
-    "ltqmmfww3tue6tibtyfc4kk7edh3owewxwcgrkvwqw4cwgd3w3zcj6id"
+    "67xpi7z753tbmylc7etrifjxqeyizoiqg6n7p5we6e4nblit5bqenqad",
+    "mpidhsfpmdgxxc5ygqluwtxptgne5swp5nkjzdre6tmnent7zqwp3cyd"
 ]
 var messageHashes = []
 var blocks = []
@@ -116,8 +116,7 @@ async function findMessages(){
                 document.getElementById('memUsage').innerText = getReadableFileSizeString(current + ((basicTextEncoder.encode(data)).length + block.length))
             }
             let metadata = JSON.parse(d.split("\n")[0])
-            console.debug(metadata)
-            //let data = d.split('\n')[1]
+
             let data = d.substring(d.indexOf('\n') + 1);
             try{
                 verifyBlock(d, block)

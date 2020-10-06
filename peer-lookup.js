@@ -31,6 +31,9 @@ self.addEventListener('message', async function(e) {
     let peerList = await lookupPeer(peer)
     peerList.forEach(node => {
         if (node){
+            //if (await (await fetch('http://' + node + '.onion/ping')).text() !== 'pong'){
+            //    return
+            //}
             postMessage(node)
         }
     })
