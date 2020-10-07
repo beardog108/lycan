@@ -39,27 +39,29 @@
               <p>kiccan is a message board program that utilizes the <a href="https://onionr.net/">Onionr</a> network.</p>
               <p>posts are rate-limited using a partial hash collision proof of work function.</p>
               <p>⚠️ the host of this web page has no control over posts. Browse and post at your own risk.</p>
-              <p class="is-pulled-right">post memory usage: <span id="memUsage">0kb</span></p>
-              <p class="is-hidden has-text-warning noTor">You do not seem to be able to reach .onion services. Please use Tor Browser or Brave Browser's private tabs.</p>
+              <p class="is-pulled-right">feed size: <span id="memUsage">0kb</span> | page size: 289kb</p>
+              <p class="is-hidden has-text-warning noTor">You do not seem to be able to reach .onion services. Please use Tor Browser.</p>
             </div>
         </section>
-        <div class="container messageCreator">
-            <div class="columns">
-                <div class="column is-two-fifths">
-                    <div class="postForm">
-                        <div class="control">
-                            <p>Markdown is supported, except for images, styles and scripts.</p>
-                            <textarea class="textarea" placeholder="Draft a post..." id="postMessageField"></textarea>
+        <section class="section">
+            <div class="container messageCreator">
+                <div class="columns">
+                    <div class="column is-two-fifths">
+                        <div class="postForm">
+                            <div class="control">
+                                <p>Markdown and limited HTML is supported.</p>
+                                <textarea class="textarea" placeholder="Draft a post..." id="postMessageField"></textarea>
+                            </div>
                         </div>
                     </div>
+                    <div class="column">
+                    </div>
                 </div>
-                <div class="column">
+                <div class="control">
+                    <a class="button is-primary" id="createMessageBtn">Create Post</a>
                 </div>
             </div>
-            <div class="control">
-                <a class="button is-primary" id="createMessageBtn">Create Post</a>
-            </div>
-        </div>
+        </section>
         <div class="container messageFeed">
         </div>
         <template id="cMsgTemplate">

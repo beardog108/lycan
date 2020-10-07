@@ -17,8 +17,8 @@
 */
 var findMessageIntervalTime = 5000
 var publicNodes = [
-    "67xpi7z753tbmylc7etrifjxqeyizoiqg6n7p5we6e4nblit5bqenqad",
-    "mpidhsfpmdgxxc5ygqluwtxptgne5swp5nkjzdre6tmnent7zqwp3cyd"
+    "4wbarqtxh6zasoxxftakrellcjzztcib7bqth4u3igof5fskrrvrk4yd",
+    "zl67stwxpjkntaxcfdhj3dvayculoojju6eek2jhsrdz6uwf224o6oqd"
 ]
 var messageHashes = []
 var blocks = []
@@ -52,8 +52,14 @@ setInterval(function(){shuffleArray(publicNodes)}, 5000)
 
 
 // Make Tor connect to each node to reduce future connection time
-publicNodes.forEach(element => {
-    fetch("http://" + element + ".onion/ping")
+publicNodes.forEach(node => {
+    let doPing = async function(){
+        let res = await(await fetch("http://" + node + ".onion/ping")).text()
+        if (res !== "pong!"){
+            console.debug(node)
+        }
+    }
+    doPing()
 })
 
 function getCurrentNode(){
@@ -65,22 +71,39 @@ function getCurrentNode(){
 }
 
 function addMessage(message, timestamp){
+    function sortEntries() {
+        var entries = document.getElementsByClassName('entry')
+
+        if (entries.length > 1) {
+            const sortBy = 'data-epoch'
+            const parent = entries[0].parentNode
+
+            const sorted = Array.from(entries).sort((a, b) => b.getAttribute(sortBy) - a.getAttribute(sortBy))
+            sorted.forEach(element => parent.appendChild(element))
+        }
+    }
+
 
     message =  DOMPurify.sanitize(marked(message),
                                  {FORBID_ATTR: ['style'],
-                                 ALLOWED_TAGS: ['b', 'p', 'em', 'i', 'a',
+                                 ALLOWED_TAGS: ['b', 'p', 'em', 'i', 'a', 'strong', 'sub', 'small', 'ul', 'li', 'ol', 'strike',
+                                                'tr', 'td', 'th', 'table', 'thead', 'tfoot', 'colgroup', 'col', 'caption', 'marquee',
                                                 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'center', 'br', 'hr']})
 
     let childEl = document.createElement('div')
     childEl.classList.add('content')
     childEl.innerHTML = message
     var tmpl = document.getElementById("cMsgTemplate")
+    timestamp = timestamp.toString()
 
     let newEl = tmpl.content.cloneNode(true)
+    newEl.children[0].setAttribute('data-epoch', timestamp)
+    newEl.children[0].classList.add("entry")
     newEl.children[0].children[0].children[0].innerText = ""
     newEl.children[0].children[0].children[0].append(childEl)
-    newEl.children[0].children[0].children[2].innerText = timestamp
+    newEl.children[0].children[0].children[2].innerText = new Date(timestamp * 1000).toString().split('GMT')[0]
     document.getElementsByClassName("messageFeed")[0].prepend(newEl)
+    sortEntries()
 }
 
 async function apiGET(path, queryString, raw=false){
@@ -102,7 +125,7 @@ async function findMessages(){
         setTimeout(function(){findMessages()}, 1000)
         return
     }
-    let messages = (await apiGET("getblocklist", "?type=brd")).split('\n')
+    let messages = (await apiGET("getblocklist", "?type=kic")).split('\n')
     messages.forEach(block => {
         if (!block) { return}
         block = reconstructHash(block)
@@ -127,7 +150,7 @@ async function findMessages(){
                 return
             }
             blocks.push(block)
-            addMessage(data, new Date(metadata['time'] * 1000))
+            addMessage(data, metadata['time'])
             updateMemoryUsage(data, block)
         })
     })
