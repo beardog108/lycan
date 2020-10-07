@@ -139,7 +139,11 @@ async function findMessages(){
                 document.getElementById('memUsage').innerText = getReadableFileSizeString(current + ((basicTextEncoder.encode(data)).length + block.length))
             }
             try{
-                let metadata = JSON.parse(d.split("\n")[0])
+                var metadata = JSON.parse(d.split("\n")[0])
+                // Make sure the block is an actual post so nodes can't send us stuff unrelated to dapp
+                if (JSON.parse(metadata['meta'])['type'] !== 'kic'){
+                    throw new Error("Not correct block type: " + block)
+                }
             }
             catch(e){
                 console.debug(e)
