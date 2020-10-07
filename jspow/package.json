@@ -1,0 +1,15 @@
+{
+  "name": "onionr-jspow",
+  "version": "0.0.0",
+  "description": "Onionr POW JS Implementation",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "sha3": "^2.1.3"
+  }
+}
