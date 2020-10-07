@@ -138,7 +138,13 @@ async function findMessages(){
                 // Size is size of data (not metadata) and block hash
                 document.getElementById('memUsage').innerText = getReadableFileSizeString(current + ((basicTextEncoder.encode(data)).length + block.length))
             }
-            let metadata = JSON.parse(d.split("\n")[0])
+            try{
+                let metadata = JSON.parse(d.split("\n")[0])
+            }
+            catch(e){
+                console.debug(e)
+                return
+            }
 
             let data = d.substring(d.indexOf('\n') + 1);
             try{
