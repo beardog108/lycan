@@ -19,13 +19,17 @@ document.getElementById("createMessageBtn").onclick = async function(){
     document.getElementById("createMessageBtn").setAttribute("disabled", true)
 
     let field = document.getElementById("postMessageField")
+    var postMessage = field.value
+    if (document.getElementById('use-markdown').checked){
+        postMessage = marked(postMessage)
+    }
 
     let payload = {
         "metadata": {
             'time': Math.floor((Date.now() / 1000)),
-            'meta': JSON.stringify({'type': 'kic', 'ch': 'global'})
+            'meta': JSON.stringify({'type': postTopic})
         },
-        "data": field.value,
+        "data": postMessage,
         "difficulty": difficulty.length / 2
     }
     powWorker.postMessage(JSON.stringify(payload))

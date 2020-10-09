@@ -17,14 +17,15 @@
 */
 var findMessageIntervalTime = 5000
 var publicNodes = [
-    "4wbarqtxh6zasoxxftakrellcjzztcib7bqth4u3igof5fskrrvrk4yd",
-    "zl67stwxpjkntaxcfdhj3dvayculoojju6eek2jhsrdz6uwf224o6oqd"
+    "ty3rq3kub6gvzpngnrvfsk5emhoh2ltkti62u4ophca6ijciajotqqid"
 ]
 var messageHashes = []
 var blocks = []
 var basicTextEncoder = new TextEncoder()
 var difficulty = "0000"
 var maxBlockAge = 2678400
+var postTopic = 'kic' // we use block types as the topic with 'kic' as the prefix
+var lastLookup = Math.floor((Date.now() / 1000)) - maxBlockAge
 
 
 function shuffleArray(array) {
@@ -84,7 +85,7 @@ function addMessage(message, timestamp){
     }
 
 
-    message =  DOMPurify.sanitize(marked(message),
+    message =  DOMPurify.sanitize(message,
                                  {FORBID_ATTR: ['style'],
                                  ALLOWED_TAGS: ['b', 'p', 'em', 'i', 'a', 'strong', 'sub', 'small', 'ul', 'li', 'ol', 'strike',
                                                 'tr', 'td', 'th', 'table', 'thead', 'tfoot', 'colgroup', 'col', 'caption', 'marquee',
@@ -107,13 +108,19 @@ function addMessage(message, timestamp){
 }
 
 async function apiGET(path, queryString, raw=false){
-    let response = await fetch("http://" + getCurrentNode() + ".onion/" + encodeURIComponent(path) + queryString)
+    let nodeToUse = getCurrentNode()
+    let requestTimeout = setTimeout(function(){
+        console.debug(nodeToUse + " timed out")
+        publicNodes = publicNodes.filter(item => item !== nodeToUse)
+    }, 10000)
+    let response = await fetch("http://" + nodeToUse + ".onion/" + encodeURIComponent(path) + queryString)
 
     if (response.ok) { // if HTTP-status is 200-299
       // get the response body (the method explained below)
       if (raw){
           return await response.blob()
       }
+      clearTimeout(requestTimeout)
       return await response.text()
     } else {
       console.debug("HTTP-Error: " + response.status)
@@ -125,7 +132,8 @@ async function findMessages(){
         setTimeout(function(){findMessages()}, 1000)
         return
     }
-    let messages = (await apiGET("getblocklist", "?type=kic")).split('\n')
+    let messages = (await apiGET("getblocklist", "?type=" + postTopic + "&date=" + lastLookup)).split('\n')
+    lastLookup = Math.floor((Date.now() / 1000))
     messages.forEach(block => {
         if (!block) { return}
         block = reconstructHash(block)
@@ -141,7 +149,7 @@ async function findMessages(){
             try{
                 var metadata = JSON.parse(d.split("\n")[0])
                 // Make sure the block is an actual post so nodes can't send us stuff unrelated to dapp
-                if (JSON.parse(metadata['meta'])['type'] !== 'kic'){
+                if (JSON.parse(metadata['meta'])['type'] !== postTopic){
                     throw new Error("Not correct block type: " + block)
                 }
             }
