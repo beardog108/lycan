@@ -17,7 +17,8 @@
 */
 var findMessageIntervalTime = 5000
 var publicNodes = [
-    "ty3rq3kub6gvzpngnrvfsk5emhoh2ltkti62u4ophca6ijciajotqqid"
+    "ty3rq3kub6gvzpngnrvfsk5emhoh2ltkti62u4ophca6ijciajotqqid",
+    "aekulizc7lsl4bh3ainlnnbfqtboavitfxuvanqq3eyposdifzzeddqd"
 ]
 var messageHashes = []
 var blocks = []
@@ -118,9 +119,12 @@ async function apiGET(path, queryString, raw=false){
     if (response.ok) { // if HTTP-status is 200-299
       // get the response body (the method explained below)
       if (raw){
+          connectedToOnionr = true
           return await response.blob()
       }
       clearTimeout(requestTimeout)
+      document.getElementById("lastReached").classList.replace("has-text-warning", "has-text-success")
+      document.getElementById("lastReached").innerText = "Onionr network reached"
       return await response.text()
     } else {
       console.debug("HTTP-Error: " + response.status)
@@ -128,9 +132,9 @@ async function apiGET(path, queryString, raw=false){
 }
 
 async function findMessages(){
+    findMessageIntervalTime = 5000
     if (document.hidden){
-        setTimeout(function(){findMessages()}, 1000)
-        return
+        findMessageIntervalTime = 10000
     }
     let messages = (await apiGET("getblocklist", "?type=" + postTopic + "&date=" + lastLookup)).split('\n')
     lastLookup = Math.floor((Date.now() / 1000))

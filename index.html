@@ -11,16 +11,16 @@
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👁️</text></svg>">
     <link rel="stylesheet" href="css/bulma-dark.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="tordetect.js" async></script>
-    <script src="marked.min.js" defer></script>
-    <script src="purify.min.js" defer></script>
-    <script src="sha3.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/tordetect.js" async></script>
+    <script src="js/marked.min.js" defer></script>
+    <script src="js/purify.min.js" defer></script>
+    <script src="js/sha3.js" defer></script>
     <script src="jspow/index.js" defer></script>
-    <script src="onionr-blocks.js" defer></script>
-    <script src="hush-hush.js" defer></script>
-    <script src="worker-handler.js" defer></script>
-    <script src="message-creator.js" defer></script>
+    <script src="js/onionr-blocks.js" defer></script>
+    <script src="js/hush-hush.js" defer></script>
+    <script src="js/worker-handler.js" defer></script>
+    <script src="js/message-creator.js" defer></script>
 </head>
     <body>
         <section class="section">
@@ -38,13 +38,19 @@
                   JavaScript is required for this app. The server has no knowledge of posts, so content must be served by P2P nodes.
                 </p></noscript>
               <p>kiccan is a message board program that utilizes the <a href="https://onionr.net/">Onionr</a> network.</p>
-              <p>posts are rate-limited using a partial hash collision proof of work function.</p>
+              <p>posts are rate-limited and protected using a partial hash collision proof of work function.</p>
+              <p>kiccan is <i>decentralized as in power</i></p>
               <p>⚠️ the host of this web page has no control over posts. Browse and post at your own risk.</p>
               <br>
-              <label class="checkbox">
-                <input type="checkbox" id="use-markdown" checked>
-                write using markdown/HTML
-              </label>
+              <div class="columns">
+                  <div id="lastReached" class="column has-text-warning is-one-fifth">Last reached network: never</div>
+                  <div class="column">
+                    <label class="checkbox">
+                        <input type="checkbox" id="use-markdown" checked>
+                        draft using markdown/HTML
+                      </label>
+                  </div>
+              </div>
               <p class="is-pulled-right">feed size: <span id="memUsage">0kb</span> | page size: 289kb</p>
               <p class="is-hidden has-text-warning noTor">You do not seem to be able to reach .onion services. Please use Tor Browser.</p>
             </div>
@@ -69,6 +75,9 @@
             </div>
         </section>
         <div class="container messageFeed">
+        </div>
+        <div class="container block">
+            <footer>Privacy policy: We log nothing, but Onionr node operators may log data. Nothing personalized is sent to Onionr nodes, but all posts should be considered public and immutable.</footer>
         </div>
         <template id="cMsgTemplate">
             <div class="box cMsgBox">
