@@ -39,17 +39,34 @@ document.getElementById("createMessageBtn").onclick = async function(){
     }, 3000)
 }
 
-powWorker.addEventListener('message', function(e) {
-    let decoder = new TextDecoder("utf-8")
-     let message = decoder.decode(e.data)
+async function doUpload(data){
+    if (! publicNodes.length){
+        setTimeout(function(){
+            doUpload(data)
+        }, 1000)
+        return
+    }
 
-     fetch('http://' + getCurrentNode() + '.onion/upload', {
+    let decoder = new TextDecoder("utf-8")
+    let uploadTimeout = setTimeout(function(){
+        console.debug("upload timed out")
+        doUpload(data)
+    }, 30000)
+    let upload = await fetch('http://' + getCurrentNode() + '.onion/upload', {
         method: 'POST',
         headers: {
             "content-type": "application/octet-stream"
         },
-        body: decoder.decode(e.data)
+        body: decoder.decode(data)
     })
+    clearTimeout(uploadTimeout)
+    if (upload.ok){
+        return
+    }
+    doUpload(data)
+}
 
+powWorker.addEventListener('message', function(e) {
      console.debug("Generated block: " + doHashHex(e.data))
+     doUpload(e.data)
   }, false)
