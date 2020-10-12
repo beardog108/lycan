@@ -15,12 +15,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-importScripts("jspow/index.js")
-importScripts("sha3.js")
+importScripts("/jspow/index.js")
+importScripts("/js/sha3.js")
 
 self.addEventListener('message', function(e) {
   var data = JSON.parse(e.data)
-  console.debug(data.metadata)
+
   self.postMessage(
     doPow(
     data.metadata,

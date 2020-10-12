@@ -15,19 +15,31 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-var lookupWorker = new Worker('peer-lookup.js');
-var powWorker = new Worker("powworker.js")
+var lookupWorker = new Worker('/js/peer-lookup.js')
+var powWorker = new Worker("/js/powworker.js")
 
 lookupWorker.addEventListener('message', function(e) {
-    if (publicNodes.includes(e.data)){
-      return
+    let addPeer = async function(p){
+      if (await (await fetch("http://" + p + ".onion/plaintext")).text() != "true")
+      {
+        console.debug("cannot add " + p)
+        return
+      }
+      if (publicNodes.includes(p) || initialNodes.includes(p)){
+        return
+      }
+      publicNodes.push(p)
     }
-    publicNodes.push(e.data)
+    addPeer(e.data)
   }, false);
 
 
 
 setInterval(function(){
-  lookupWorker.postMessage(JSON.stringify({"node": getCurrentNode()}))
+  let n = getCurrentNode()
+  if (typeof n == "undefined"){
+    n = initialNodes[0]
+  }
+  lookupWorker.postMessage(JSON.stringify({"node": n}))
 }, 60000)
-lookupWorker.postMessage(JSON.stringify({"node": getCurrentNode()}))
+lookupWorker.postMessage(JSON.stringify({"node": initialNodes[0]}))

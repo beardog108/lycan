@@ -30,7 +30,7 @@ document.getElementById("createMessageBtn").onclick = async function(){
             'meta': JSON.stringify({'type': postTopic})
         },
         "data": postMessage,
-        "difficulty": difficulty.length / 2
+        "difficulty": 5
     }
     powWorker.postMessage(JSON.stringify(payload))
 

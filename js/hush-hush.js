@@ -17,13 +17,15 @@
 */
 var findMessageIntervalTime = 5000
 var publicNodes = [
-    "ty3rq3kub6gvzpngnrvfsk5emhoh2ltkti62u4ophca6ijciajotqqid",
-    "aekulizc7lsl4bh3ainlnnbfqtboavitfxuvanqq3eyposdifzzeddqd"
+    "ueawiiskhaxdhkqjvgz6drrlf7srvaifrewnb6rxf6tro3welajvlgyd",
+    "csb2thc5yzv2gbhoozbqrzv747irs5z2lbpd7eiyh6eivvltok76qrqd"
 ]
+var initialNodes = JSON.parse(JSON.stringify(publicNodes))
+publicNodes = []
 var messageHashes = []
 var blocks = []
 var basicTextEncoder = new TextEncoder()
-var difficulty = "0000"
+var difficulty = "00000"
 var maxBlockAge = 2678400
 var postTopic = 'kic' // we use block types as the topic with 'kic' as the prefix
 var lastLookup = Math.floor((Date.now() / 1000)) - maxBlockAge
@@ -36,7 +38,7 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
-shuffleArray(publicNodes)
+shuffleArray(initialNodes)
 
 //https://stackoverflow.com/q/10420352
 function getReadableFileSizeString(fileSizeInBytes) {
@@ -50,19 +52,8 @@ function getReadableFileSizeString(fileSizeInBytes) {
     return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
 };
 
+
 setInterval(function(){shuffleArray(publicNodes)}, 5000)
-
-
-// Make Tor connect to each node to reduce future connection time
-publicNodes.forEach(node => {
-    let doPing = async function(){
-        let res = await(await fetch("http://" + node + ".onion/ping")).text()
-        if (res !== "pong!"){
-            console.debug(node)
-        }
-    }
-    doPing()
-})
 
 function getCurrentNode(){
     // Very basic round-robin use of nodes
@@ -132,6 +123,7 @@ async function apiGET(path, queryString, raw=false){
 }
 
 async function findMessages(){
+
     findMessageIntervalTime = 5000
     if (document.hidden){
         findMessageIntervalTime = 10000

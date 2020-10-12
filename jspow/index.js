@@ -46,19 +46,20 @@ function doPow(metadata, data, difficulty){
         data = encoder.encode(data)
     }
 
-    metadata['c'] = 0
-    metadata['n'] = Math.floor(Math.random() * Math.floor(10000)) + Math.floor(Math.random() * Math.floor(10000))
 
+    metadata['c'] = -9999999
+    metadata['n'] = Math.floor(Math.random() * Math.floor(10000)) + Math.floor(Math.random() * Math.floor(10000))
+    var difficultyCounter = 0
     while (true){
-        var difficultyCounter = 0
+        difficultyCounter = 0
         let metadataString = encoder.encode(JSON.stringify(metadata) + "\n")
         let arr = new Uint8Array(metadataString.length + data.length)
         arr.set(metadataString)
         arr.set(data, metadataString.length)
-        hash = doHash(arr)
+        hash = doHashHex(arr)
 
-        for (var i = 0; i < hash.length; i++){
-            if (hash[i] == 0){
+        for (var i = 0; i < difficulty; i++){
+            if (hash[i] == '0'){
                 difficultyCounter += 1
                 if (difficultyCounter === difficulty){
                     return arr
@@ -69,6 +70,9 @@ function doPow(metadata, data, difficulty){
             }
         }
         metadata['c'] += 1
+        if (metadata['c'] % 10000 == 0){
+            console.debug(metadata['c'])
+        }
     }
 
 }
