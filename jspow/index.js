@@ -70,9 +70,11 @@ function doPow(metadata, data, difficulty){
             }
         }
         metadata['c'] += 1
+        /*
         if (metadata['c'] % 10000 == 0){
             console.debug(metadata['c'])
         }
+        */
     }
 
 }

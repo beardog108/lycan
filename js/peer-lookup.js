@@ -28,6 +28,7 @@ self.addEventListener('message', async function(e) {
     var data = JSON.parse(e.data)
 
     let peer = data['node']
+    console.debug(peer)
     let peerList = await lookupPeer(peer)
     peerList.forEach(node => {
         if (node){

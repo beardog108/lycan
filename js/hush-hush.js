@@ -101,6 +101,10 @@ function addMessage(message, timestamp){
 
 async function apiGET(path, queryString, raw=false){
     let nodeToUse = getCurrentNode()
+    if (! nodeToUse){
+        console.debug("no node yet")
+        return
+    }
     let requestTimeout = setTimeout(function(){
         console.debug(nodeToUse + " timed out")
         publicNodes = publicNodes.filter(item => item !== nodeToUse)
@@ -123,13 +127,18 @@ async function apiGET(path, queryString, raw=false){
 }
 
 async function findMessages(){
-
     findMessageIntervalTime = 5000
     if (document.hidden){
         findMessageIntervalTime = 10000
     }
-    let messages = (await apiGET("getblocklist", "?type=" + postTopic + "&date=" + lastLookup)).split('\n')
-    lastLookup = Math.floor((Date.now() / 1000))
+    try{
+        var messages = (await apiGET("getblocklist", "?type=" + postTopic + "&date=" + lastLookup)).split('\n')
+    }
+    catch(e){
+        setTimeout(function(){findMessages()}, findMessageIntervalTime)
+        return
+    }
+    lastLookup = Math.floor((Date.now() / 1000)) - (findMessageIntervalTime / 1000) - 600
     messages.forEach(block => {
         if (!block) { return}
         block = reconstructHash(block)
