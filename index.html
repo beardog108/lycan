@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta name="referrer" content="no-referrer">
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👁️</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏴‍☠️</text></svg>">
     <link rel="stylesheet" href="css/bulma-dark.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/tordetect.js" async></script>
@@ -71,13 +71,17 @@
                 </div>
                 <div class="control">
                     <a class="button is-primary" id="createMessageBtn">Create Post</a>
+                    <span id="creatingMessage" class="is-hidden"><span id="creatingCount">0</span> post(s) generating</span>
                 </div>
             </div>
         </section>
         <div class="container messageFeed">
         </div>
         <div class="container block">
-            <footer>Privacy policy: We log nothing, but Onionr node operators may log data. Nothing personalized is sent to Onionr nodes, but all posts should be considered public and immutable.</footer>
+            <footer>privacy policy: We log nothing, but Onionr node operators may log data. Nothing personalized is sent to Onionr nodes, but all posts should be considered public and immutable.
+                <br>
+                it is your responsibility to obey laws in your area.
+            </footer>
         </div>
         <template id="cMsgTemplate">
             <div class="box cMsgBox">

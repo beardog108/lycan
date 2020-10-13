@@ -18,6 +18,8 @@
 document.getElementById("createMessageBtn").onclick = async function(){
     document.getElementById("createMessageBtn").setAttribute("disabled", true)
 
+    document.getElementById("creatingMessage").classList.remove("is-hidden")
+    document.getElementById("creatingCount").innerText = parseInt(document.getElementById("creatingCount").innerText) + 1
     let field = document.getElementById("postMessageField")
     var postMessage = field.value
     if (document.getElementById('use-markdown').checked){
@@ -67,6 +69,10 @@ async function doUpload(data){
 }
 
 powWorker.addEventListener('message', function(e) {
+    document.getElementById("creatingCount").innerText = parseInt(document.getElementById("creatingCount").innerText) - 1
+    if (parseInt(document.getElementById("creatingCount").innerText) <= 0){
+        document.getElementById("creatingMessage").classList.add("is-hidden")
+    }
      console.debug("Generated block: " + doHashHex(e.data))
      doUpload(e.data)
   }, false)
