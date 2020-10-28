@@ -21,6 +21,7 @@
     <script src="js/hush-hush.js" defer></script>
     <script src="js/worker-handler.js" defer></script>
     <script src="js/message-creator.js" defer></script>
+    <script src="js/topic-handler.js" defer></script>
 </head>
     <body>
         <section class="section">
@@ -43,7 +44,7 @@
               <p>⚠️ the host of this web page has no control over posts. Browse and post at your own risk.</p>
               <br>
               <div class="columns">
-                  <div id="lastReached" class="column has-text-warning is-one-fifth">Last reached network: never</div>
+                  <div id="lastReached" class="column has-text-warning is-one-fifth">Last reached Onionr: never</div>
                   <div class="column">
                     <label class="checkbox">
                         <input type="checkbox" id="use-markdown" checked>
@@ -57,6 +58,14 @@
         </section>
         <section class="section">
             <div class="container messageCreator">
+                <div class="columns">
+                    <div class="column">
+                        <div class="control">
+                            <label for="boardID">Board name: </label>
+                            <input type="text" value="global" name="boardID" id="boardID">
+                        </div>
+                    </div>
+                </div>
                 <div class="columns">
                     <div class="column is-two-fifths">
                         <div class="postForm">

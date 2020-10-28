@@ -18,7 +18,8 @@
 var findMessageIntervalTime = 5000
 var publicNodes = [
     "ueawiiskhaxdhkqjvgz6drrlf7srvaifrewnb6rxf6tro3welajvlgyd",
-    "csb2thc5yzv2gbhoozbqrzv747irs5z2lbpd7eiyh6eivvltok76qrqd"
+    "csb2thc5yzv2gbhoozbqrzv747irs5z2lbpd7eiyh6eivvltok76qrqd",
+    "r57vs5ehxfm3inmdmxx33dbgdy4ev3wg36lynf4uma27jgikxjsx3yid.onion"
 ]
 var initialNodes = JSON.parse(JSON.stringify(publicNodes))
 publicNodes = []
@@ -27,9 +28,12 @@ var blocks = []
 var basicTextEncoder = new TextEncoder()
 var difficulty = "00000"
 var maxBlockAge = 2678400
-var postTopic = 'kic' // we use block types as the topic with 'kic' as the prefix
+var postTopic = document.getElementById('boardID').value // we use block types as the topic with 'kic' as the prefix
 var lastLookup = Math.floor((Date.now() / 1000)) - maxBlockAge
 
+if (document.location.protocol === "file:"){
+    alert("Sorry, this does not support file: access. Use a localhost HTTP server or Electron.\n\n$ python3 -m http.server --bind 127.0.0.1 8080")
+}
 
 function shuffleArray(array) {
     if (document.hidden){return}
