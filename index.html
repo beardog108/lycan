@@ -52,8 +52,15 @@
                       </label>
                   </div>
               </div>
-              <p class="is-pulled-right">feed size: <span id="memUsage">0kb</span> | page size: 289kb</p>
-              <p class="is-hidden has-text-warning noTor">You do not seem to be able to reach .onion services. Please use Tor Browser.</p>
+              <div class="columns">
+                  <div class="column is-one-fifth">
+                    <p>feed size: <span id="memUsage">0kb</span></p>
+                  </div>
+                  <div class="column">
+                    <p>Connected usable nodes: <span id="usableNodes">0</span></p>
+                  </div>
+                  <div class="column is-hidden has-text-warning noTor">You do not seem to be able to reach .onion services. Please use Tor Browser.</div>
+              </div>
             </div>
         </section>
         <section class="section">
@@ -87,7 +94,7 @@
         <div class="container messageFeed">
         </div>
         <div class="container block">
-            <footer>privacy policy: We log nothing, but Onionr node operators may log data. Nothing personalized is sent to Onionr nodes, but all posts should be considered public and immutable.
+            <footer>privacy policy: we log nothing, but Onionr node operators may log data. Nothing personalized is sent to Onionr nodes, but all posts should be considered public and immutable.
                 <br>
                 it is your responsibility to obey laws in your area.
             </footer>

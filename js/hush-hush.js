@@ -38,8 +38,8 @@ if (document.location.protocol === "file:"){
 function shuffleArray(array) {
     if (document.hidden){return}
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        [array[i], array[j]] = [array[j], array[i]]
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
 }
 shuffleArray(initialNodes)
@@ -131,9 +131,9 @@ async function apiGET(path, queryString, raw=false){
 }
 
 async function findMessages(){
-    findMessageIntervalTime = 5000
+    findMessageIntervalTime = 3000
     if (document.hidden){
-        findMessageIntervalTime = 10000
+        findMessageIntervalTime = 1000
     }
     try{
         var messages = (await apiGET("getblocklist", "?type=" + postTopic + "&date=" + lastLookup)).split('\n')

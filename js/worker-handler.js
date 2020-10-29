@@ -28,7 +28,10 @@ lookupWorker.addEventListener('message', function(e) {
       if (publicNodes.includes(p) || initialNodes.includes(p)){
         return
       }
+      document.getElementById("lastReached").classList.replace("has-text-warning", "has-text-success")
+      document.getElementById("lastReached").innerText = "Onionr network reached"
       publicNodes.push(p)
+      document.getElementById("usableNodes").innerText = publicNodes.length
     }
     addPeer(e.data)
   }, false);
@@ -42,4 +45,8 @@ setInterval(function(){
   }
   lookupWorker.postMessage(JSON.stringify({"node": n}))
 }, 60000)
-lookupWorker.postMessage(JSON.stringify({"node": initialNodes[0]}))
+
+initialNodes.forEach(n => {
+  lookupWorker.postMessage(JSON.stringify({"node": n}))
+
+});
