@@ -38,23 +38,23 @@ if (document.location.protocol === "file:"){
 function shuffleArray(array) {
     if (document.hidden){return}
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        const j = Math.floor(Math.random() * (i + 1))
+        [array[i], array[j]] = [array[j], array[i]]
     }
 }
 shuffleArray(initialNodes)
 
 //https://stackoverflow.com/q/10420352
 function getReadableFileSizeString(fileSizeInBytes) {
-    var i = -1;
-    var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+    var i = -1
+    var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB']
     do {
-        fileSizeInBytes = fileSizeInBytes / 1024;
+        fileSizeInBytes = fileSizeInBytes / 1024
         i++;
-    } while (fileSizeInBytes > 1024);
+    } while (fileSizeInBytes > 1024)
 
-    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
-};
+    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i]
+}
 
 
 setInterval(function(){shuffleArray(publicNodes)}, 5000)
