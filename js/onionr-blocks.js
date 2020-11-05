@@ -1,5 +1,5 @@
 /*
-    hush-hush: anonymous message board using the onionr network
+    Lycan: anonymous message board using the onionr network
     Copyright (C) 2020 Kevin Froman
 
     This program is free software: you can redistribute it and/or modify

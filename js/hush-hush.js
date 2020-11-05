@@ -1,5 +1,5 @@
 /*
-    hush-hush: anonymous message board using the onionr network
+    Lycan: anonymous message board using the onionr network
     Copyright (C) 2020 Kevin Froman
 
     This program is free software: you can redistribute it and/or modify
@@ -18,8 +18,7 @@
 var findMessageIntervalTime = 5000
 var publicNodes = [
     "ueawiiskhaxdhkqjvgz6drrlf7srvaifrewnb6rxf6tro3welajvlgyd",
-    "csb2thc5yzv2gbhoozbqrzv747irs5z2lbpd7eiyh6eivvltok76qrqd",
-    "r57vs5ehxfm3inmdmxx33dbgdy4ev3wg36lynf4uma27jgikxjsx3yid.onion"
+    "csb2thc5yzv2gbhoozbqrzv747irs5z2lbpd7eiyh6eivvltok76qrqd"
 ]
 var initialNodes = JSON.parse(JSON.stringify(publicNodes))
 publicNodes = []
