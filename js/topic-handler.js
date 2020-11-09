@@ -4,4 +4,5 @@ document.getElementById('boardID').onchange = function(e){
     blocks = []
     document.getElementsByClassName("messageFeed")[0].innerText = ""
     document.getElementById('memUsage').innerText = "0kB"
+    lastLookup = Math.floor((Date.now() / 1000)) - maxBlockAge
 }
