@@ -33,4 +33,7 @@ function verifyTime(time){
     if ((epoch - time) > maxBlockAge){
         throw new Error("Block is too old")
     }
+    if (time > (epoch + 60)){
+        throw new Error("Block is skewed to the future")
+    }
 }
