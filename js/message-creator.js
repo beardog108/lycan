@@ -49,7 +49,7 @@ async function doUpload(data){
         return
     }
     const curNode = getCurrentNode()
-    if (typeof curNode == "undefined"){
+    if (typeof curNode == "undefined" || curNode === "undefined.onion"){
         setTimeout(function(){
             doUpload(data)
         }, 1000)
