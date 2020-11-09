@@ -61,7 +61,7 @@ async function doUpload(data){
         console.debug("upload timed out")
         doUpload(data)
     }, 30000)
-    let upload = await fetch('http://' + getCurrentNode() + '.onion/upload', {
+    let upload = await fetch('http://' + curNode + '.onion/upload', {
         method: 'POST',
         headers: {
             "content-type": "application/octet-stream"
