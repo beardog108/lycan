@@ -48,6 +48,13 @@ async function doUpload(data){
         }, 1000)
         return
     }
+    const curNode = getCurrentNode()
+    if (typeof curNode == "undefined"){
+        setTimeout(function(){
+            doUpload(data)
+        }, 1000)
+        return
+    }
 
     let decoder = new TextDecoder("utf-8")
     let uploadTimeout = setTimeout(function(){
