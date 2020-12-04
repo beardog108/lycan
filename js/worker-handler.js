@@ -25,7 +25,7 @@ lookupWorker.addEventListener('message', function(e) {
         console.debug("cannot add " + p)
         return
       }
-      if (publicNodes.includes(p) || initialNodes.includes(p)){
+      if (publicNodes.includes(p)){
         return
       }
       document.getElementById("lastReached").classList.replace("has-text-warning", "has-text-success")
