@@ -23,8 +23,15 @@ function reconstructHash(hash){
 function verifyBlock(raw, hash){
     var encoder = new TextEncoder("utf-8")
     hash = reconstructHash(hash)
+    const blockSize = encoder.encode(raw).length;
     if (doHashHex(encoder.encode(raw)) != hash){
         throw new Error("Hash does not match")
+    }
+    if (blockSize > 10000){
+        throw new Error("Block is too large")
+    }
+    else if(blockSize < 10){
+        throw new Error("Block size is too small")
     }
 }
 

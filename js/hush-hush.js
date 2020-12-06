@@ -141,7 +141,7 @@ async function findMessages(){
         setTimeout(function(){findMessages()}, findMessageIntervalTime)
         return
     }
-    lastLookup = Math.floor((Date.now() / 1000)) - (findMessageIntervalTime / 1000) - 600
+    lastLookup = Math.floor((Date.now() / 1000)) - (findMessageIntervalTime / 1000) - 1200
     messages.forEach(block => {
         if (!block) { return}
         block = reconstructHash(block)
@@ -155,6 +155,9 @@ async function findMessages(){
                 document.getElementById('memUsage').innerText = getReadableFileSizeString(current + ((basicTextEncoder.encode(data)).length + block.length))
             }
             try{
+                if (typeof d === "undefined"){
+                    return
+                }
                 var metadata = JSON.parse(d.split("\n")[0])
                 // Make sure the block is an actual post so nodes can't send us stuff unrelated to dapp
                 if (JSON.parse(metadata['meta'])['type'] !== postTopic){

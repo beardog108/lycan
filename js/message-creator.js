@@ -42,6 +42,7 @@ document.getElementById("createMessageBtn").onclick = async function(){
 }
 
 async function doUpload(data){
+    document.getElementById("uploadingCount").parentNode.classList.remove('is-hidden')
     if (! publicNodes.length){
         setTimeout(function(){
             doUpload(data)
@@ -70,6 +71,12 @@ async function doUpload(data){
     })
     clearTimeout(uploadTimeout)
     if (upload.ok){
+        let cur = parseInt(document.getElementById("uploadingCount").innerText)
+        document.getElementById("uploadingCount").innerText = parseInt(document.getElementById("uploadingCount").innerText) - 1
+        if (cur - 1 <= 0){
+            document.getElementById("uploadingCount").parentNode.classList.add('is-hidden')
+        }
+
         return
     }
     doUpload(data)
@@ -81,5 +88,6 @@ powWorker.addEventListener('message', function(e) {
         document.getElementById("creatingMessage").classList.add("is-hidden")
     }
      console.debug("Generated block: " + doHashHex(e.data))
+     document.getElementById("uploadingCount").innerText = parseInt(document.getElementById("uploadingCount").innerText) + 1
      doUpload(e.data)
   }, false)
